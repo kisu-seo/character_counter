@@ -136,7 +136,7 @@ const App = () => {
     // [최상위 래퍼] 배경 이미지 + 최소 전체 화면 높이 설정
     // isDark 상태에 따라 다크/라이트 배경 이미지를 동적으로 교체
     <div
-      className="min-h-screen bg-cover bg-top bg-no-repeat transition-colors duration-300"
+      className="min-h-screen bg-cover bg-top bg-no-repeat transition-colors duration-75"
       style={{
         backgroundImage: isDark
           ? 'url(/images/bg-dark-theme.png)'   // 다크모드 배경 이미지
@@ -176,7 +176,7 @@ const App = () => {
             bg-neutral-100 dark:bg-neutral-700
             hover:bg-neutral-200 dark:hover:bg-neutral-600
             rounded-radius-8
-            transition-all duration-200
+            transition-all duration-75
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
           "
         >
@@ -225,7 +225,7 @@ const App = () => {
               placeholder:text-neutral-700 dark:placeholder:text-neutral-200
               rounded-radius-12 text-preset-3 resize-none shadow-[0px_2px_5px_0px_rgba(15,15,15,0.04)]
               focus:outline-none focus:ring-2 focus:border-transparent
-              transition-all duration-200 border-2
+              transition-colors duration-75 border-2
               ${isOverLimit
                 ? 'border-orange-800 focus:ring-orange-800'       // 제한 초과: 빨간 테두리
                 : 'border-neutral-200 dark:border-neutral-700 focus:ring-blue-500' // 정상: 회색 → 보라 포커스
@@ -260,7 +260,7 @@ const App = () => {
                 type="checkbox"
                 checked={excludeSpaces}
                 onChange={(e) => setExcludeSpaces(e.target.checked)}
-                className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-150"
+                className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75"
                 aria-label="공백을 제외하여 글자 수 계산"
               />
               Exclude Spaces
@@ -273,7 +273,7 @@ const App = () => {
                   type="checkbox"
                   checked={hasCharLimit}
                   onChange={(e) => setHasCharLimit(e.target.checked)}
-                  className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-150"
+                  className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75"
                   aria-label="최대 글자 수 제한 설정"
                 />
                 Set Character Limit
@@ -293,7 +293,7 @@ const App = () => {
                     border border-neutral-200 dark:border-neutral-600
                     rounded-radius-6 text-preset-4
                     focus:outline-none focus:ring-2 focus:ring-blue-500
-                    transition-all duration-200
+                    transition-all duration-75
                   "
                   aria-label="글자 수 제한 숫자 입력"
                 />
@@ -414,7 +414,7 @@ const App = () => {
                     mt-spacing-300
                     flex items-center gap-spacing-075
                     text-preset-4 text-neutral-900 dark:text-neutral-0
-                    rounded-radius-4 transition-all duration-200
+                    rounded-radius-4 transition-all duration-75
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
                   "
                   aria-expanded={showAllLetters}
