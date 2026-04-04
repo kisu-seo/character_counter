@@ -1,35 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" class="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Counter</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Character counter</title>
+  <!-- [Google Fonts] DM Sans 글꼴: 100~1000 굵기, 이탤릭 포함하여 전부 불러오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
 </head>
-<body>
 
-  Analyze your text in real-time.
+<!-- [body] 라이트/다크 기본 배경색 설정 + 폰트 적용 -->
+<body class="bg-neutral-100 dark:bg-neutral-900 font-dm-sans">
 
-  Start typing here… (or paste your text)
+  <!-- React 앱이 이 div 안에 그려집니다 -->
+  <div id="root"></div>
 
-  Exclude Spaces
-  Set Character Limit
-
-  Approx. reading time: <!-- Insert number --> minutes
-
-  <!-- Insert number -->
-  Total Characters
-
-  <!-- Insert number -->
-  Word Count
-
-  <!-- Insert number -->
-  Sentence Count
-
-  Letter Density
-  No characters found. Start typing to see letter density.
+  <!-- [Vite 진입점] src/main.jsx를 모듈로 불러와 React 앱을 시작 -->
+  <script type="module" src="/src/main.jsx"></script>
 
 </body>
+
 </html>

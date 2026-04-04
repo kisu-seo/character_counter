@@ -1,0 +1,49 @@
+/*
+  [Tailwind 지시어(Directives)]
+  Tailwind의 기본 스타일, 컴포넌트, 유틸리티 클래스를 이 파일에 주입합니다.
+  Vite + Tailwind 환경에서는 이 세 줄이 반드시 맨 위에 있어야 합니다.
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   [기본 스타일] 전체 페이지에 DM Sans 폰트 적용
+   ============================================================ */
+body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ============================================================
+   [스크롤바 커스텀] textarea의 스크롤바를 디자인에 맞게 조정
+   (크롬/엣지/사파리 등 Webkit 기반 브라우저에서만 동작)
+   ============================================================ */
+
+/* 스크롤바 전체 너비 */
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 스크롤바 배경 트랙(레일) - 투명하게 설정 */
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 스크롤바 손잡이(Thumb) - neutral-600 색상 + 완전히 둥글게 */
+textarea::-webkit-scrollbar-thumb {
+  background: #404254; /* neutral-600 */
+  border-radius: 999px;
+}
+
+/* ============================================================
+   [체크박스 커스텀] 체크되었을 때 흰색 체크 표시(✓) 아이콘 삽입
+   appearance-none 으로 브라우저 기본 스타일을 제거했기 때문에
+   checked 상태일 때 배경 이미지로 체크 표시를 직접 그려줌
+   ============================================================ */
+input[type="checkbox"]:checked {
+  /* SVG로 만든 흰색 체크 표시를 배경 이미지로 삽입 */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;   /* 이미지 반복 없음 */
+  background-position: center;    /* 체크 표시를 가운데 정렬 */
+  background-size: 100% 100%;     /* 체크박스 크기에 꽉 차게 */
+}
