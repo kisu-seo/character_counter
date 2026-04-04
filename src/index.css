@@ -40,10 +40,16 @@ textarea::-webkit-scrollbar-thumb {
    appearance-none 으로 브라우저 기본 스타일을 제거했기 때문에
    checked 상태일 때 배경 이미지로 체크 표시를 직접 그려줌
    ============================================================ */
+/* 라이트 모드용 기본 체크 표시 (neutral-900: #12131A) */
 input[type="checkbox"]:checked {
-  /* SVG로 만든 흰색 체크 표시를 배경 이미지로 삽입 */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;   /* 이미지 반복 없음 */
-  background-position: center;    /* 체크 표시를 가운데 정렬 */
-  background-size: 100% 100%;     /* 체크박스 크기에 꽉 차게 */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='%2312131A' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+/* 다크 모드용 체크 표시 (neutral-900: #12131A) */
+.dark input[type="checkbox"]:checked {
+  /* SVG의 fill 속성을 #12131A(%2312131A)로 변경하여 적용했습니다 */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='%2312131A' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
 }
