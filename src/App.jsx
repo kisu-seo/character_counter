@@ -29,7 +29,37 @@ const App = () => {
   // [상태] "See more" 버튼으로 모든 글자 밀도를 펼칠지 여부
   const [showAllLetters, setShowAllLetters] = useState(false);
 
+  // [상태] 키보드로 textarea에 포커스가 된 상태인지 여부
+  // 마우스 클릭과 키보드 탐색을 구분하기 위해 사용
+  const [isKeyboardFocused, setIsKeyboardFocused] = useState(false);
+
+  // [상태] 현재 사용자가 키보드를 사용 중인지 여부 (탭키 등이 눌리면 true)
+  const [isKeyboardUser, setIsKeyboardUser] = useState(false);
+
   // ── 부수 효과(Effect) ────────────────────────────────────────
+
+  // [효과] 전역 키보드/마우스 이벤트로 사용자의 입력 방식을 감지
+  // Tab 키 등 키보드를 누르면 isKeyboardUser를 true로,
+  // 마우스를 클릭하면 false로 전환하여 포커스 스타일을 결정합니다.
+  useEffect(() => {
+    // 키보드 입력 감지: 어떤 키든 눌리면 키보드 사용자로 전환
+    const handleKeyDown = () => setIsKeyboardUser(true);
+    // 마우스 클릭 감지: 마우스를 누르면 마우스 사용자로 전환
+    const handleMouseDown = () => {
+      setIsKeyboardUser(false);
+      setIsKeyboardFocused(false); // 포커스 효과도 즉시 제거
+    };
+
+    // 문서(document) 전체에 이벤트를 등록합니다
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleMouseDown);
+
+    // [정리(Cleanup)] 컴포넌트가 화면에서 사라질 때 이벤트 등록을 해제합니다
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, []); // [] : 컴포넌트가 처음 마운트될 때 딱 한 번만 실행
 
   // [효과] isDark 상태가 바뀔 때마다 html 태그에 'dark' 클래스를 추가/제거
   // Tailwind의 darkMode: 'class' 방식은 html 태그의 'dark' 클래스로 작동함
@@ -150,42 +180,45 @@ const App = () => {
           - 우측: 다크/라이트 모드 토글 버튼
       ===================================================== */}
       <header
-        className="
-          flex items-center justify-between
-          p-spacing-200 md:px-spacing-400
-          bg-neutral-0 dark:bg-transparent
-        "
+        className="bg-neutral-0 dark:bg-transparent w-full"
         role="banner"
       >
-        {/* 로고 + 서비스 이름 묶음 */}
-        <div className="flex items-center gap-spacing-100">
-          {/* 로고 이미지: 다크/라이트 모드에 따라 다른 파일 사용 */}
-          <img
-            src={isDark ? '/images/logo-dark-theme.svg' : '/images/logo-light-theme.svg'}
-            alt="Character Counter 로고"
-            className="h-8 w-auto md:w-[246px] md:h-10"
-          />
-        </div>
+        {/* 헤더의 내부 컨테이너: 990px(lg) 최대 너비와 가운데 정렬(mx-auto)을 적용했습니다 */}
+        <div className="
+          max-w-[375px] md:max-w-[768px] lg:max-w-[990px] mx-auto
+          flex items-center justify-between
+          p-spacing-200 md:px-spacing-400 lg:px-0 lg:pt-spacing-400 lg:pb-0
+        ">
+          {/* 로고 + 서비스 이름 묶음 */}
+          <div className="flex items-center gap-spacing-100">
+            {/* 로고 이미지: 다크/라이트 모드에 따라 다른 파일 사용 */}
+            <img
+              src={isDark ? '/images/logo-dark-theme.svg' : '/images/logo-light-theme.svg'}
+              alt="Character Counter 로고"
+              className="h-8 w-auto md:w-[246px] md:h-10"
+            />
+          </div>
 
-        {/* 테마 전환 버튼: 다크모드일 때 태양(☀) 아이콘, 라이트모드일 때 달(☽) 아이콘 표시 */}
-        <button
-          onClick={toggleTheme}
-          aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
-          className="
-            p-spacing-100
-            bg-neutral-100 dark:bg-neutral-700
-            hover:bg-neutral-200 dark:hover:bg-neutral-600
-            rounded-radius-8
-            transition-all duration-75
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-          "
-        >
-          <img
-            src={isDark ? '/images/icon-sun.svg' : '/images/icon-moon.svg'}
-            alt={isDark ? '태양 아이콘' : '달 아이콘'}
-            className="w-5 h-5"
-          />
-        </button>
+          {/* 테마 전환 버튼: 다크모드일 때 태양(☀) 아이콘, 라이트모드일 때 달(☽) 아이콘 표시 */}
+          <button
+            onClick={toggleTheme}
+            aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
+            className="
+              p-spacing-100
+              bg-neutral-100 dark:bg-neutral-700
+              hover:bg-neutral-200 dark:hover:bg-neutral-600
+              rounded-radius-8
+              transition-all duration-75
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+            "
+          >
+            <img
+              src={isDark ? '/images/icon-sun.svg' : '/images/icon-moon.svg'}
+              alt={isDark ? '태양 아이콘' : '달 아이콘'}
+              className="w-5 h-5"
+            />
+          </button>
+        </div>
       </header>
 
       {/* ====================================================
@@ -197,8 +230,8 @@ const App = () => {
       <main
         className="
           max-w-[375px] md:max-w-[768px] lg:max-w-[990px] mx-auto
-          px-spacing-200 md:px-spacing-400 lg:px-0 pt-spacing-500 md:pb-[93px] pb-spacing-400
-          flex flex-col gap-spacing-500
+          px-spacing-200 md:px-spacing-400 lg:px-0 lg:pt-spacing-600 lg:pb-spacing-800 pt-spacing-500 md:pb-[93px] pb-spacing-400
+          flex flex-col gap-spacing-500 lg:gap-spacing-600
         "
         aria-label="Character Counter 메인 콘텐츠"
       >
@@ -218,17 +251,23 @@ const App = () => {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
+            // [이벤트] 포커스가 생길 때: 전역에서 감지된 키보드 사용자인 경우에만 효과 활성화
+            onFocus={() => { if (isKeyboardUser) setIsKeyboardFocused(true); }}
+            // [이벤트] 포커스가 사라질 때: 항상 포커스 효과를 false로 초기화
+            onBlur={() => setIsKeyboardFocused(false)}
             className={`
               w-full h-48 p-spacing-200
-              bg-neutral-100 dark:bg-neutral-800
+              bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700
               text-neutral-700 dark:text-neutral-200
               placeholder:text-neutral-700 dark:placeholder:text-neutral-200
-              rounded-radius-12 text-preset-3 resize-none shadow-[0px_2px_5px_0px_rgba(15,15,15,0.04)]
-              focus:outline-none focus:ring-2 focus:border-transparent
-              transition-colors duration-75 border-2
+              rounded-radius-12 text-preset-3 resize-none cursor-pointer
+              focus:outline-none focus:ring-0
+              transition-colors duration-150 border-2
               ${isOverLimit
-                ? 'border-orange-800 focus:ring-orange-800'       // 제한 초과: 빨간 테두리
-                : 'border-neutral-200 dark:border-neutral-700 focus:ring-blue-500' // 정상: 회색 → 보라 포커스
+                ? 'border-orange-800 dark:border-orange-500 shadow-[0px_0px_8px_0px_rgba(254,129,89,1)]' // 제한 초과: 라이트(800) / 다크(500) 테두리 + 그림자
+                : isKeyboardFocused
+                  ? 'border-blue-500 shadow-[0px_0px_10px_0px_rgba(194,124,248,1)]' // 키보드 포커스 시: 보라 테두리 + 네온 광채 (공통)
+                  : 'border-neutral-200 hover:border-neutral-200 dark:border-neutral-700 dark:hover:border-neutral-600 shadow-[0px_2px_5px_0px_rgba(15,15,15,0.04)]' // 정상: 기본 회색
               }
             `}
             placeholder="Start typing here... (or paste your text)"
@@ -239,13 +278,13 @@ const App = () => {
           {/* 글자 수 제한 초과 경고 메시지 (isOverLimit이 true일 때만 표시) */}
           {isOverLimit && (
             <p
-              className="mt-spacing-075 text-preset-4 text-orange-800 flex items-center gap-spacing-075"
+              className="mt-spacing-150 text-preset-4 text-orange-800 dark:text-orange-500 flex items-center gap-spacing-075"
               role="alert"
               aria-live="polite"
             >
               <img src="/images/icon-info.svg" alt="" aria-hidden="true" className="w-4 h-4 shrink-0" />
               {/* charCount - charLimit : 얼마나 초과했는지 계산 */}
-              글자 수 제한을 {charCount - charLimit}자 초과했습니다.
+              Limit reached! Your text exceeds {charCount - charLimit} characters.
             </p>
           )}
 
@@ -261,7 +300,7 @@ const App = () => {
                 type="checkbox"
                 checked={excludeSpaces}
                 onChange={(e) => setExcludeSpaces(e.target.checked)}
-                className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75"
+                className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 focus-visible:border-neutral-200 dark:focus-visible:bg-white dark:focus-visible:border-neutral-200 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-white"
                 aria-label="공백을 제외하여 글자 수 계산"
               />
               Exclude Spaces
@@ -274,31 +313,30 @@ const App = () => {
                   type="checkbox"
                   checked={hasCharLimit}
                   onChange={(e) => setHasCharLimit(e.target.checked)}
-                  className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75"
+                  className="w-4 h-4 appearance-none bg-transparent border border-neutral-600 dark:border-neutral-200 rounded-radius-4 focus-visible:border-neutral-200 dark:focus-visible:bg-white dark:focus-visible:border-neutral-200 checked:bg-blue-500 checked:border-blue-500 dark:checked:bg-blue-400 dark:checked:border-blue-400 cursor-pointer transition-colors duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-white"
                   aria-label="최대 글자 수 제한 설정"
                 />
                 Set Character Limit
               </label>
 
-              {/* hasCharLimit이 true일 때만 숫자 입력 필드 표시 */}
-              {hasCharLimit && (
-                <input
-                  type="number"
-                  value={charLimit}
-                  onChange={handleLimitChange}
-                  min="1"
-                  className="
-                    w-20 px-spacing-100 py-spacing-025
-                    bg-neutral-0 dark:bg-neutral-700
-                    text-neutral-900 dark:text-neutral-0
-                    border border-neutral-200 dark:border-neutral-600
-                    rounded-radius-6 text-preset-4
-                    focus:outline-none focus:ring-2 focus:ring-blue-500
-                    transition-all duration-75
-                  "
-                  aria-label="글자 수 제한 숫자 입력"
-                />
-              )}
+              {/* [레이아웃 시프트 방지] 숫자 입력 필드를 항상 렌더링하되, 체크 여부에 따라 투명도(opacity)만 조절합니다 */}
+              <input
+                type="number"
+                value={charLimit}
+                onChange={handleLimitChange}
+                min="1"
+                className={`
+                  w-[55px] h-[29px]
+                  bg-transparent
+                  text-neutral-900 dark:text-neutral-0
+                  border border-neutral-600
+                  rounded-radius-6 text-preset-4 text-center
+                  focus:outline-none focus:ring-2 focus:ring-blue-500
+                  transition-all duration-200
+                  ${hasCharLimit ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}
+                `}
+                aria-label="글자 수 제한 숫자 입력"
+              />
             </div>
 
             {/* 예상 읽기 시간: md:ml-auto를 사용해 오른쪽 끝으로 배치합니다 */}
@@ -314,22 +352,22 @@ const App = () => {
         <section aria-label="텍스트 분석 통계" className="grid grid-cols-1 md:grid-cols-3 gap-spacing-200">
 
           {/* ── 카드 1: Total Characters ─ 보라색 ── */}
-          <div className="relative overflow-hidden bg-blue-400 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
+          <div className="relative overflow-hidden bg-blue-400 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] lg:px-spacing-200 min-h-[120px]">
             <img src="/images/pattern-character-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] lg:right-[-30px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
               {/* String().padStart(2, '0'): 수치가 0일 때 '00'으로, 한 자리 수일 때 앞에 0을 붙여 일관되게 표시합니다 */}
               <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`전체 글자 수: ${charCount}`}>
                 {String(charCount).padStart(2, '0')}
               </p>
-              <p className="text-preset-3 text-neutral-900">Total Characters</p>
+              <p className="text-preset-3 text-neutral-900">Total Characters {excludeSpaces && '(no space)'}</p>
             </div>
           </div>
 
           {/* ── 카드 2: Word Count ─ 노란색 ── */}
-          <div className="relative overflow-hidden bg-yellow-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
+          <div className="relative overflow-hidden bg-yellow-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] lg:px-spacing-200 min-h-[120px]">
             <img src="/images/pattern-word-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] lg:right-[-30px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
               <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`단어 수: ${wordCount}`}>
                 {String(wordCount).padStart(2, '0')}
@@ -339,9 +377,9 @@ const App = () => {
           </div>
 
           {/* ── 카드 2: Sentence Count ─ 주황색 ── */}
-          <div className="relative overflow-hidden bg-orange-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
+          <div className="relative overflow-hidden bg-orange-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] lg:px-spacing-200 min-h-[120px]">
             <img src="/images/pattern-sentence-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] lg:right-[-30px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
               <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`문장 수: ${sentenceCount}`}>
                 {String(sentenceCount).padStart(2, '0')}
@@ -356,7 +394,7 @@ const App = () => {
             글자 밀도 섹션 (Letter Density)
             - 디자인 균형을 위해 섹션을 위로 -16px만큼 살짝 끌어올렸습니다
         ===================================================== */}
-        <section aria-label="글자 밀도 분석" className="mt-[-16px]">
+        <section aria-label="글자 밀도 분석" className="mt-[-16px] lg:mt-[-24px]">
 
           <h2 className="text-preset-2 text-neutral-900 dark:text-neutral-200 mb-spacing-250">
             Letter Density
