@@ -104,8 +104,8 @@ const App = () => {
       className="min-h-screen bg-cover bg-top bg-no-repeat transition-colors duration-75"
       style={{
         backgroundImage: isDark
-          ? 'url(/images/bg-dark-theme.png)'
-          : 'url(/images/bg-light-theme.png)',
+          ? `url(${import.meta.env.BASE_URL}images/bg-dark-theme.png)`
+          : `url(${import.meta.env.BASE_URL}images/bg-light-theme.png)`,
       }}
     >
       <Header isDark={isDark} toggleTheme={toggleTheme} />

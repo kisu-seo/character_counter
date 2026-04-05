@@ -68,7 +68,7 @@ const TextInputSection = ({
           role="alert"
           aria-live="polite"
         >
-          <img src="/images/icon-info.svg" alt="" aria-hidden="true" className="w-4 h-4 shrink-0" />
+          <img src={`${import.meta.env.BASE_URL}images/icon-info.svg`} alt="" aria-hidden="true" className="w-4 h-4 shrink-0" />
           Limit reached! Your text exceeds {charCount - charLimit} characters.
         </p>
       )}

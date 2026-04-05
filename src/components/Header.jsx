@@ -17,7 +17,7 @@ const Header = ({ isDark, toggleTheme }) => {
         <div className="flex items-center gap-spacing-100">
           {/* 로고 이미지를 교체하려면 public/images/ 폴더의 파일을 변경하세요. */}
           <img
-            src={isDark ? '/images/logo-dark-theme.svg' : '/images/logo-light-theme.svg'}
+            src={isDark ? `${import.meta.env.BASE_URL}images/logo-dark-theme.svg` : `${import.meta.env.BASE_URL}images/logo-light-theme.svg`}
             alt="Character Counter 로고"
             className="h-8 w-auto md:w-[246px] md:h-10"
           />
@@ -36,7 +36,7 @@ const Header = ({ isDark, toggleTheme }) => {
           "
         >
           <img
-            src={isDark ? '/images/icon-sun.svg' : '/images/icon-moon.svg'}
+            src={isDark ? `${import.meta.env.BASE_URL}images/icon-sun.svg` : `${import.meta.env.BASE_URL}images/icon-moon.svg`}
             alt={isDark ? '태양 아이콘' : '달 아이콘'}
             className="w-5 h-5"
           />
