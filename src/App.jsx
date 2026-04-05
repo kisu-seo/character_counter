@@ -152,7 +152,7 @@ const App = () => {
       <header
         className="
           flex items-center justify-between
-          p-spacing-200
+          p-spacing-200 md:px-spacing-400
           bg-neutral-0 dark:bg-transparent
         "
         role="banner"
@@ -163,7 +163,7 @@ const App = () => {
           <img
             src={isDark ? '/images/logo-dark-theme.svg' : '/images/logo-light-theme.svg'}
             alt="Character Counter 로고"
-            className="h-8 w-auto"
+            className="h-8 w-auto md:w-[246px] md:h-10"
           />
         </div>
 
@@ -196,15 +196,15 @@ const App = () => {
       ===================================================== */}
       <main
         className="
-          max-w-[375px] mx-auto
-          px-spacing-200 pt-spacing-500 pb-spacing-400
+          max-w-[375px] md:max-w-[768px] lg:max-w-[990px] mx-auto
+          px-spacing-200 md:px-spacing-400 lg:px-0 pt-spacing-500 md:pb-[93px] pb-spacing-400
           flex flex-col gap-spacing-500
         "
         aria-label="Character Counter 메인 콘텐츠"
       >
 
         {/* [타이틀] 메인 헤딩 - Text Preset 1 Mobile(40px, Bold) 적용 */}
-        <h1 className="text-preset-1-mobile text-neutral-900 dark:text-neutral-100 text-center">
+        <h1 className="text-preset-1-mobile md:text-preset-1 text-neutral-900 dark:text-neutral-100 text-center">
           Analyze your text<br />in real&#8209;time.
           {/* &#8209; = 줄바꿈 없는 하이픈(non-breaking hyphen) */}
         </h1>
@@ -250,7 +250,8 @@ const App = () => {
           )}
 
           {/* 체크박스 옵션 목록: spacing-200(16px)을 적용해 입력창과의 거리를 넓혔습니다 */}
-          <div className="mt-spacing-200 flex flex-col gap-spacing-150">
+          {/* md:flex-row: 태블릿 화면에서는 가로 1열로 정렬합니다 */}
+          <div className="mt-spacing-200 flex flex-col md:flex-row md:items-center gap-spacing-150 md:gap-spacing-300">
 
             {/* 체크박스 1: 공백 제외 */}
             {/* checked={excludeSpaces}: 체크박스가 상태와 동기화됨 */}
@@ -299,26 +300,26 @@ const App = () => {
                 />
               )}
             </div>
-          </div>
 
-          {/* 예상 읽기 시간: readingTime 계산값으로 실시간 업데이트 */}
-          <p className="mt-spacing-150 text-preset-4 text-neutral-900 dark:text-neutral-200">
-            Approx. reading time: {readingTime}
-          </p>
+            {/* 예상 읽기 시간: md:ml-auto를 사용해 오른쪽 끝으로 배치합니다 */}
+            <p className="text-preset-4 text-neutral-900 dark:text-neutral-200 whitespace-nowrap md:ml-auto">
+              Approx. reading time: {readingTime}
+            </p>
+          </div>
         </section>
 
         {/* ====================================================
             통계 카드 섹션 (3개 카드: 보라/노랑/주황)
         ===================================================== */}
-        <section aria-label="텍스트 분석 통계" className="flex flex-col gap-spacing-200">
+        <section aria-label="텍스트 분석 통계" className="grid grid-cols-1 md:grid-cols-3 gap-spacing-200">
 
           {/* ── 카드 1: Total Characters ─ 보라색 ── */}
-          <div className="relative overflow-hidden bg-blue-400 rounded-radius-16 py-[27px] px-spacing-250 min-h-[120px]">
+          <div className="relative overflow-hidden bg-blue-400 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
             <img src="/images/pattern-character-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
               {/* String().padStart(2, '0'): 수치가 0일 때 '00'으로, 한 자리 수일 때 앞에 0을 붙여 일관되게 표시합니다 */}
-              <p className="text-preset-1-mobile text-neutral-900" aria-label={`전체 글자 수: ${charCount}`}>
+              <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`전체 글자 수: ${charCount}`}>
                 {String(charCount).padStart(2, '0')}
               </p>
               <p className="text-preset-3 text-neutral-900">Total Characters</p>
@@ -326,11 +327,11 @@ const App = () => {
           </div>
 
           {/* ── 카드 2: Word Count ─ 노란색 ── */}
-          <div className="relative overflow-hidden bg-yellow-500 rounded-radius-16 py-[27px] px-spacing-250 min-h-[120px]">
+          <div className="relative overflow-hidden bg-yellow-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
             <img src="/images/pattern-word-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
-              <p className="text-preset-1-mobile text-neutral-900" aria-label={`단어 수: ${wordCount}`}>
+              <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`단어 수: ${wordCount}`}>
                 {String(wordCount).padStart(2, '0')}
               </p>
               <p className="text-preset-3 text-neutral-900">Word Count</p>
@@ -338,11 +339,11 @@ const App = () => {
           </div>
 
           {/* ── 카드 2: Sentence Count ─ 주황색 ── */}
-          <div className="relative overflow-hidden bg-orange-500 rounded-radius-16 py-[27px] px-spacing-250 min-h-[120px]">
+          <div className="relative overflow-hidden bg-orange-500 rounded-radius-16 py-[27px] px-spacing-250 md:py-[25px] md:px-[12px] min-h-[120px]">
             <img src="/images/pattern-sentence-count.svg" alt="" aria-hidden="true"
-              className="absolute right-[-42px] top-0 h-full w-auto object-cover" />
+              className="absolute right-[-42px] md:right-[-70px] top-0 h-full w-auto object-cover" />
             <div className="relative z-10 flex flex-col gap-spacing-100">
-              <p className="text-preset-1-mobile text-neutral-900" aria-label={`문장 수: ${sentenceCount}`}>
+              <p className="text-preset-1-mobile md:text-preset-1 text-neutral-900" aria-label={`문장 수: ${sentenceCount}`}>
                 {String(sentenceCount).padStart(2, '0')}
               </p>
               <p className="text-preset-3 text-neutral-900">Sentence Count</p>
@@ -383,9 +384,9 @@ const App = () => {
                       {letter}
                     </span>
 
-                    {/* 프로그레스 바 트랙 */}
+                    {/* 프로그레스 바 트랙: md:flex-1을 추가하여 가로가 넓어지면 꽉 차게 만듭니다 */}
                     <div
-                      className="w-[212px] h-[12px] bg-neutral-100 dark:bg-neutral-800 rounded-radius-full overflow-hidden"
+                      className="w-[212px] md:flex-1 h-[12px] bg-neutral-100 dark:bg-neutral-800 rounded-radius-full overflow-hidden"
                       role="progressbar"
                       aria-valuenow={percent}
                       aria-valuemin={0}
@@ -411,7 +412,7 @@ const App = () => {
                 <button
                   onClick={() => setShowAllLetters(prev => !prev)}
                   className="
-                    mt-spacing-300
+                    mt-spacing-300 md:mt-spacing-250
                     flex items-center gap-spacing-075
                     text-preset-4 text-neutral-900 dark:text-neutral-0
                     rounded-radius-4 transition-all duration-75
